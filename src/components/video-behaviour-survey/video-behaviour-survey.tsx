@@ -53,9 +53,19 @@ export class VideoBehaviourSurvey {
   timeSpentOnSleepMode: number = 1;
   timeSpentInterval: any = null;
   timeRecordResult: string = ``;
+  timeRecordInputElement: any;
+  challengeRecordResult: string = ``;
+  challengeRecordInputElement: any;
 
   componentWillLoad() {
-    document.querySelector('input').style.display = 'none'
+    const inputs = document.querySelectorAll('input');
+    if(inputs.length) {
+      this.timeRecordInputElement = inputs[0];
+      this.challengeRecordInputElement = inputs[1];
+      this.timeRecordInputElement.style.display = 'none';
+      this.challengeRecordInputElement.style.display = 'none';
+    }
+    window['IsComponentReady'] = true;
   }
 
   componentDidLoad() {
@@ -78,6 +88,7 @@ export class VideoBehaviourSurvey {
         if (this.isChallengeInProgress) {
           if (keyName.toLowerCase() === this.challengeKey) {
             this.wasLastChallengeSuccessful = true;
+            this.challengeRecordResult += `${this.challengeRecordResult}, success`;
             this.events.push({ type: 'challenge', detail: `complete - SUCCESS`, timestamp: Date.now() });
             this.challengeAnswerTickTimer.stop(this.challengeAnswerTime);
             this.isChallengeInProgress = false;
@@ -93,7 +104,7 @@ export class VideoBehaviourSurvey {
             this.events.push({ type: 'info', detail: `Exiting sleep mode`, timestamp: Date.now() });
             this.bootUpInProgress = true;
             clearInterval(this.timeSpentInterval);
-            this.timeRecordResult = `${this.timeSpentOnSleepMode},`;
+            this.timeRecordResult += `${this.timeSpentOnSleepMode},`;
             this.timeSpentOnSleepMode = 1;
             setTimeout(() => {
               this.bootUpInProgress = false;
@@ -181,6 +192,7 @@ export class VideoBehaviourSurvey {
         this.events.push({ type: 'challenge answer', detail: `Countdown ended`, timestamp: Date.now() });
         this.events.push({ type: 'challenge', detail: `timeout - FAILED`, timestamp: Date.now() });
         this.wasLastChallengeSuccessful = false;
+        this.challengeRecordResult += `${this.challengeRecordResult}, fail`;
         this.isChallengeInProgress = false;
         this.challengeKey = null;
         this.challengeTickTimer.start(Number(this.challengeInterval));
@@ -251,8 +263,8 @@ export class VideoBehaviourSurvey {
 
   endChallenge() {
     const nextButton: HTMLElement = document.querySelector('#NextButton');
-    const inputElement: HTMLInputElement = document.querySelector('input');
-    inputElement.value = this.timeRecordResult;
+    this.timeRecordInputElement.value = this.timeRecordResult;
+    this.challengeRecordInputElement.value = this.challengeRecordResult;
     if (nextButton) {
       nextButton.style.display = 'inline-block';
     }
