@@ -9,22 +9,22 @@ import pauseIcon from './pause.svg';
   shadow: true,
 })
 export class VideoBehaviourSurvey {
-  @Prop() timeout: any = 5;
-  @Prop() challengeInterval: any = 5;
-  @Prop() challengeAnswerTime: any = 5;
-  @Prop() videoId: any;
-  @Prop() bootupTime: any;
-  @Prop() start: any;
-  @Prop() end: any;
-  @Prop() videoWidth: any;
-  @Prop() videoHeight: any;
-  @Prop() exitSleepModeKey: string;
-  @Prop() sleepModeText: string;
-  @Prop() bootupText: string;
-  @Prop() timeOverText: string;
-  @Prop() challengeSuccessText: string;
-  @Prop() challengeFailText: string;
-  @Prop() challengeDescriptionText: string;
+  @Prop() timeout: any = window['timeout'];
+  @Prop() challengeInterval: any = window['challenge-interval'];
+  @Prop() challengeAnswerTime: any = window['challenge-answer-time'];
+  @Prop() videoId: any = window['video-id'];
+  @Prop() bootupTime: any = window['bootup-time'];
+  @Prop() start: any = window['start'];
+  @Prop() end: any = window['end'];
+  @Prop() videoWidth: any = window['video-width'];
+  @Prop() videoHeight: any = window['video-height'];
+  @Prop() exitSleepModeKey: string = window['exit-sleep-mode-key'];
+  @Prop() sleepModeText: string = window['sleep-mode-text'];
+  @Prop() bootupText: string = window['bootup-text'];
+  @Prop() timeOverText: string = window['time-over-text'];
+  @Prop() challengeSuccessText: string = window['challenge-success-text'];
+  @Prop() challengeFailText: string = window['challenge-fail-text'];
+  @Prop() challengeDescriptionText: string = window['challenge-description-text'];
 
   player: any;
   initedVideo: boolean = false;
